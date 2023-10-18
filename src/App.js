@@ -4,8 +4,10 @@ import DisplayMovies from "./DisplayMovies";
 
 function App() {
   const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchMovieHandler = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch("https://swapi.dev/api/films/");
       if (!response.ok) {
@@ -23,6 +25,7 @@ function App() {
           };
         });
         setMovies(transformedMovies);
+        setIsLoading(false);
       } else {
         throw new Error("Data structure from SWAPI is not as expected");
       }
@@ -40,7 +43,11 @@ function App() {
       >
         Fetch Movies
       </button>
-      <DisplayMovies data={movies} />
+      <section>
+        {!isLoading && movies.length > 0 && <DisplayMovies data={movies} />}
+        {!isLoading && movies.length === 0 && <p>No Movies found</p>}
+        {isLoading && <p>Loading...</p>}
+      </section>
     </div>
   );
 }
