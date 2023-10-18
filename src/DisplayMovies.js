@@ -1,6 +1,11 @@
 import React from "react";
 
 const DisplayMovies = ({ data }) => {
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
     <div className="container">
       <div className="row">
@@ -10,9 +15,9 @@ const DisplayMovies = ({ data }) => {
               <div className="card-body">
                 <h5 className="card-title">{movie.title}</h5>
                 <h6 className="card-subtitle mb-2 text-muted">
-                  {movie.release_date}
+                  {formatDate(movie.releaseDate)}
                 </h6>
-                <p className="card-text">{movie.opening_text}</p>
+                <p className="card-text">{movie.openingText}</p>
               </div>
             </div>
           </div>
