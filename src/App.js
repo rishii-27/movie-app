@@ -5,11 +5,14 @@ import DisplayMovies from "./DisplayMovies";
 function App() {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const fetchMovieHandler = async () => {
     setIsLoading(true);
+    setError(null);
+
     try {
-      const response = await fetch("https://swapi.dev/api/films/");
+      const response = await fetch("https://swapi.dev/api/film/");
       if (!response.ok) {
         throw new Error("Failed to fetch data from the SWAPI");
       }
@@ -25,13 +28,13 @@ function App() {
           };
         });
         setMovies(transformedMovies);
-        setIsLoading(false);
       } else {
         throw new Error("Data structure from SWAPI is not as expected");
       }
     } catch (error) {
-      console.error(error);
+      setError(error.message);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -45,7 +48,8 @@ function App() {
       </button>
       <section>
         {!isLoading && movies.length > 0 && <DisplayMovies data={movies} />}
-        {!isLoading && movies.length === 0 && <p>No Movies found</p>}
+        {!isLoading && movies.length === 0 && !error && <p>No Movies found</p>}
+        {!isLoading && error && <p>{error}</p>}
         {isLoading && <p>Loading...</p>}
       </section>
     </div>
