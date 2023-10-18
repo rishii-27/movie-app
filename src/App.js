@@ -5,12 +5,15 @@ import DisplayMovies from "./DisplayMovies";
 function App() {
   const [movies, setMovies] = useState([]);
 
-  function fetchMovieHandler() {
-    fetch("https://swapi.dev/api/films/")
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
+  const fetchMovieHandler = async () => {
+    try {
+      const response = await fetch("https://swapi.dev/api/films/");
+      if (!response.ok) {
+        throw new Error("Failed to fetch data from the SWAPI");
+      }
+
+      const data = await response.json();
+      if (data.results) {
         const transformedMovies = data.results.map((movieData) => {
           return {
             id: movieData.episode_id,
@@ -20,15 +23,20 @@ function App() {
           };
         });
         setMovies(transformedMovies);
-      });
-  }
+      } else {
+        throw new Error("Data structure from SWAPI is not as expected");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="App">
       <button
         type="button"
         onClick={fetchMovieHandler}
-        class="btn btn-success mt-2"
+        className="btn btn-success mt-2"
       >
         Fetch Movies
       </button>
