@@ -1,20 +1,23 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 
 const MovieForm = () => {
-  const [title, setTitle] = useState("");
-  const [openingText, setOpeningText] = useState("");
-  const [releaseDate, setReleaseDate] = useState("");
+  const titleRef = useRef(null);
+  const openingTextRef = useRef(null);
+  const releaseDateRef = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("New Movie Object:", {
-      title,
-      openingText,
-      releaseDate,
-    });
-    setTitle("");
-    setOpeningText("");
-    setReleaseDate("");
+    const newMovieObj = {
+      title: titleRef.current.value,
+      openingText: openingTextRef.current.value,
+      releaseDate: releaseDateRef.current.value,
+    };
+    console.log("New Movie Object:", newMovieObj);
+
+    // Optionally, you can clear the form input values using useRef:
+    titleRef.current.value = "";
+    openingTextRef.current.value = "";
+    releaseDateRef.current.value = "";
   };
 
   return (
@@ -32,8 +35,7 @@ const MovieForm = () => {
             type="text"
             className="form-control"
             id="inputTitle"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            ref={titleRef}
             required
           />
         </div>
@@ -44,8 +46,7 @@ const MovieForm = () => {
           <textarea
             className="form-control"
             id="inputOpeningText"
-            value={openingText}
-            onChange={(e) => setOpeningText(e.target.value)}
+            ref={openingTextRef}
             rows="3"
             required
           />
@@ -58,8 +59,7 @@ const MovieForm = () => {
             type="date"
             className="form-control"
             id="inputReleaseDate"
-            value={releaseDate}
-            onChange={(e) => setReleaseDate(e.target.value)}
+            ref={releaseDateRef}
             required
           />
         </div>
