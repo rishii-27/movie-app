@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import "./App.css";
 import DisplayMovies from "./DisplayMovies";
+import MovieForm from "./MovieForm";
 
 function App() {
   const [movies, setMovies] = useState([]);
@@ -50,6 +50,7 @@ function App() {
       clearInterval(retryIntervalId);
     }
   }
+
   function handleRetryClick() {
     setRetrying(true);
     setRetryIntervalId(setInterval(() => fetchMovieHandler(), 5000));
@@ -83,15 +84,18 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <button
-        type="button"
-        onClick={fetchMovieHandler}
-        className="btn btn-success mt-2"
-      >
-        Fetch Movies
-      </button>
-      <section>{content}</section>
+    <div>
+      <MovieForm />
+      <div className="text-center">
+        <button
+          type="button"
+          onClick={fetchMovieHandler}
+          className="btn btn-success mt-5"
+        >
+          Fetch Movies
+        </button>
+        <section>{content}</section>
+      </div>
     </div>
   );
 }
