@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./App.css";
 import DisplayMovies from "./DisplayMovies";
 
@@ -9,12 +9,12 @@ function App() {
   const [retrying, setRetrying] = useState(false);
   const [retryIntervalId, setRetryIntervalId] = useState(null);
 
-  const fetchMovieHandler = async () => {
+  const fetchMovieHandler = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await fetch("https://swapi.dev/api/film/");
+      const response = await fetch("https://swapi.dev/api/films/");
       if (!response.ok) {
         throw new Error("Failed to fetch data from the SWAPI");
       }
@@ -37,7 +37,11 @@ function App() {
       setError(error.message);
     }
     setIsLoading(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchMovieHandler();
+  }, [fetchMovieHandler]);
 
   function handleCancelRetryClick() {
     setRetrying(false);
@@ -69,7 +73,7 @@ function App() {
           <button onClick={handleRetryClick} className="btn btn-primary">
             Retry
           </button>
-        )}{" "}
+        )}
       </div>
     );
   }
