@@ -56,6 +56,10 @@ function App() {
     setRetryIntervalId(setInterval(() => fetchMovieHandler(), 5000));
   }
 
+  const addMovieHandle = (movie) => {
+    console.log(movie);
+  };
+
   let content = <p>No Movies found</p>;
 
   if (movies.length > 0) {
@@ -85,7 +89,7 @@ function App() {
 
   return (
     <div>
-      <MovieForm />
+      <MovieForm onAddMovie={addMovieHandle} />
       <div className="text-center">
         <button
           type="button"

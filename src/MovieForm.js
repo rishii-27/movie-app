@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 
-const MovieForm = () => {
+const MovieForm = (props) => {
   const titleRef = useRef(null);
   const openingTextRef = useRef(null);
   const releaseDateRef = useRef(null);
@@ -12,7 +12,9 @@ const MovieForm = () => {
       openingText: openingTextRef.current.value,
       releaseDate: releaseDateRef.current.value,
     };
-    console.log("New Movie Object:", newMovieObj);
+    // console.log("New Movie Object:", newMovieObj);
+
+    props.onAddMovie(newMovieObj);
 
     // Optionally, you can clear the form input values using useRef:
     titleRef.current.value = "";
