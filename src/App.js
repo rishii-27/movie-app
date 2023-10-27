@@ -22,19 +22,19 @@ function App() {
       }
 
       const data = await response.json();
-      if (data.results) {
-        const transformedMovies = data.results.map((movieData) => {
-          return {
-            id: movieData.episode_id,
-            title: movieData.title,
-            openingText: movieData.opening_crawl,
-            releaseDate: movieData.release_date,
-          };
+
+      const loadedMovies = [];
+      for (const key in data) {
+        loadedMovies.push({
+          id: key,
+          title: data[key].title,
+          openingText: data[key].openingText,
+          releaseDate: data[key].releaseDate,
         });
-        setMovies(transformedMovies);
-      } else {
-        throw new Error("Data structure from SWAPI is not as expected");
       }
+
+      console.log(data);
+      setMovies(loadedMovies);
     } catch (error) {
       setError(error.message);
     }
@@ -70,6 +70,7 @@ function App() {
       }
     );
     const data = await response.json();
+    fetchMovieHandler();
     console.log(data);
   };
 
