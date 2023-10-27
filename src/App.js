@@ -74,10 +74,32 @@ function App() {
     console.log(data);
   };
 
+  const deleteMovieHandler = async (movieId) => {
+    try {
+      const response = await fetch(
+        `https://react-movies-2c340-default-rtdb.firebaseio.com/movies/${movieId}.json`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete the movie.");
+      }
+
+      // After successful deletion, you may want to refresh the movie list
+      fetchMovieHandler();
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   let content = <p>No Movies found</p>;
 
   if (movies.length > 0) {
-    content = <DisplayMovies data={movies} />;
+    content = (
+      <DisplayMovies data={movies} onDeleteMovie={deleteMovieHandler} />
+    );
   }
 
   if (error) {
