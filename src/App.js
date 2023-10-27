@@ -14,7 +14,9 @@ function App() {
     setError(null);
 
     try {
-      const response = await fetch("https://swapi.dev/api/films/");
+      const response = await fetch(
+        "https://react-movies-2c340-default-rtdb.firebaseio.com/movies.json"
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch data from the SWAPI");
       }
@@ -56,8 +58,19 @@ function App() {
     setRetryIntervalId(setInterval(() => fetchMovieHandler(), 5000));
   }
 
-  const addMovieHandle = (movie) => {
-    console.log(movie);
+  const addMovieHandle = async (movie) => {
+    const response = await fetch(
+      "https://react-movies-2c340-default-rtdb.firebaseio.com/movies.json",
+      {
+        method: "POST",
+        body: JSON.stringify(movie),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    console.log(data);
   };
 
   let content = <p>No Movies found</p>;
